@@ -1,0 +1,14 @@
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-x: hidden;
+}
+
+.hover-shadow:hover {
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+
+.card {
+  transition: all 0.3s ease;
+}
