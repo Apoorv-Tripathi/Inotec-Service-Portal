@@ -1,4 +1,5 @@
-const puppeteer = require('puppeteer');
+const chromium = require("@sparticuz/chromium");
+const puppeteer = require("puppeteer-core");
 const QRCode = require('qrcode');
 const fs = require('fs');
 const path = require('path');
@@ -730,9 +731,20 @@ async function generateCertificatePDF(certificate) {
     `;
 
     const browser = await puppeteer.launch({
-      headless: 'new',
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
+    executablePath:
+      process.env.NODE_ENV === "production"
+        ? await chromium.executablePath()
+        : undefined,
+
+    args:
+      process.env.NODE_ENV === "production"
+        ? chromium.args
+        : ["--no-sandbox", "--disable-setuid-sandbox"],
+
+    headless: true,
+    defaultViewport: chromium.defaultViewport,
+    ignoreHTTPSErrors: true,
+});
 
     const page = await browser.newPage();
 
