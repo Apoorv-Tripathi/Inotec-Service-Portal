@@ -730,21 +730,18 @@ async function generateCertificatePDF(certificate) {
     </html>
     `;
 
+    const executablePath = await chromium.executablePath();
+
+    console.log("Chrome executable:", executablePath);
+    console.log("NODE_ENV:", process.env.NODE_ENV);
+    console.log("RENDER:", process.env.RENDER);
+
     const browser = await puppeteer.launch({
-    executablePath:
-      process.env.NODE_ENV === "production"
-        ? await chromium.executablePath()
-        : undefined,
-
-    args:
-      process.env.NODE_ENV === "production"
-        ? chromium.args
-        : ["--no-sandbox", "--disable-setuid-sandbox"],
-
-    headless: true,
-    defaultViewport: chromium.defaultViewport,
-    ignoreHTTPSErrors: true,
-});
+      executablePath,
+      args: chromium.args,
+      headless: "shell",
+      defaultViewport: chromium.defaultViewport,
+    });
 
     const page = await browser.newPage();
 
